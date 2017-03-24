@@ -10,6 +10,7 @@ using System.Collections;
 using System.Xml.Serialization;
 using SevenZip;
 using System.Collections.Concurrent;
+using System.Security.Cryptography;
 
 namespace Utils
 {
@@ -2115,6 +2116,18 @@ namespace Utils
         internal ClassDefinition ReadClassReference(int index)
         {
             return _classDefinitions[index] as ClassDefinition;
+        }
+
+        public string ComputeMD5()
+        {
+            MD5 md5 = new MD5CryptoServiceProvider();
+            byte[] retVal = md5.ComputeHash(this.GetBuffer());
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < retVal.Length; i++)
+            {
+                sb.Append(retVal[i].ToString("x2"));
+            }
+            return sb.ToString();
         }
     }
 
